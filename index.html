@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>Cat Catcher 3000</title>
-  <script src="https://cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
 <body>
   <script type="text/javascript">
@@ -12,6 +12,9 @@
         update: update });
 
       var cat, catcher, cursors, txtScore, score;
+      var catCatchMsg = new SpeechSynthesisUtterance('Ouch. Meeow');
+      var startGameMsg = new SpeechSynthesisUtterance('Dear Sir. Catch the cat.');
+
 
       function preload() {
         //load in asssets needed
@@ -29,7 +32,7 @@
         catcher.anchor.setTo(0.5, 0);
         game.physics.enable(catcher, Phaser.Physics.ARCADE);
 
-        cat = game.add.sprite(Math.random() * game.width, Math.random() * game.height, "cat");
+        cat = game.add.sprite(Math.random() * game.width - 5, Math.random() * game.height - 5, "cat");
         game.physics.enable(cat, Phaser.Physics.ARCADE);
 
         score = 0;
@@ -37,6 +40,7 @@
         txtScore = game.add.text(10, 10, score.toString(), style);
 
         cursors = game.input.keyboard.createCursorKeys();
+        window.speechSynthesis.speak(startGameMsg);
       }
 
      function update() {
@@ -63,9 +67,10 @@
       }
 
       function catHitHandler(catcherObject, catObject) {
-        catObject.x = Math.random() * game.width;
-        catObject.y = Math.random() * game.height;
+        catObject.x = Math.random() * game.width - 5;
+        catObject.y = Math.random() * game.height - 5;
         score ++;
+        window.speechSynthesis.speak(catCatchMsg);
         txtScore.setText(score.toString());
       }
     };
